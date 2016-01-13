@@ -34,8 +34,8 @@ public class ListaRankingTotal extends JFrame {
 		// --------------------- TITULO JANELA -----------------------------
 		super("Ranking Total");
 		setLayout(new BorderLayout());
-		setLocation(400, 200);
-		setSize(630, 260);
+		setLocation(250, 150);
+		setSize(800, 400);
 		setResizable(true);
 		setVisible(true);
 
@@ -57,18 +57,18 @@ public class ListaRankingTotal extends JFrame {
 
 	// ------------------------ TABELA -----------------------------
 	private void criarTabela() {
-		/*
-		 * panelTable = new JPanel(); panelTable.add(getTabelFuncionario());
-		 */
 		barraRolagem = new JScrollPane(getTabelRanking());
 		add(barraRolagem, BorderLayout.CENTER);
-
 	}
 
 	private JTable getTabelRanking() {
 		if (tabelRanking == null) {
 			tabelRanking = new JTable();
 			tabelRanking.setModel(getRankingTabelModel());
+			tabelRanking.setEnabled(false);
+			tabelRanking.getTableHeader().setReorderingAllowed(false);
+			tabelRanking.getTableHeader().setResizingAllowed(false);
+
 		}
 
 		return tabelRanking;

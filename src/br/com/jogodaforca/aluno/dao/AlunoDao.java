@@ -60,14 +60,15 @@ public class AlunoDao extends FileDao implements IGenericDao<AlunoVo> {
 			alunoString = br.readLine();
 			do {
 
-				String[] alunoStringVet = new String[3];
+				String[] alunoStringVet = new String[4];
 				alunoStringVet = alunoString.split(":");
 
 				AlunoVo aluno = new AlunoVo();
 
-				aluno.setNome(alunoStringVet[0]);
-				aluno.setSerie(Integer.parseInt(alunoStringVet[1]));
-				aluno.setIdade(Integer.parseInt(alunoStringVet[2]));
+				aluno.setCodigo(Long.parseLong(alunoStringVet[0]));
+				aluno.setNome(alunoStringVet[1]);
+				aluno.setSerie(Integer.parseInt(alunoStringVet[2]));
+				aluno.setIdade(Integer.parseInt(alunoStringVet[3]));
 
 				alunoLista.add(aluno);
 

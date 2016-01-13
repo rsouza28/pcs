@@ -1,38 +1,47 @@
 package br.com.jogodaforca.vo;
 
 public class AlunoVo {
-    
-    private String nome;
-    private Integer serie;
-    private Integer idade;
 
-    public String getNome() {
-        return nome;
-    }
+	private Long codigo = 0L;
+	private String nome;
+	private Integer serie;
+	private Integer idade;
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+	public Long getCodigo() {
+		return codigo;
+	}
 
-    public Integer getSerie() {
-        return serie;
-    }
+	public void setCodigo(Long codigo) {
+		this.codigo = codigo;
+	}
 
-    public void setSerie(Integer serie) {
-        this.serie = serie;
-    }
+	public String getNome() {
+		return nome;
+	}
 
-    public Integer getIdade() {
-        return idade;
-    }
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-    public void setIdade(Integer idade) {
-        this.idade = idade;
-    }
+	public Integer getSerie() {
+		return serie;
+	}
 
-    @Override
-    public String toString() {
-        return nome + ":" + serie + ":" + idade + "\r\n";
-    }
-    
+	public void setSerie(Integer serie) {
+		this.serie = serie;
+	}
+
+	public Integer getIdade() {
+		return idade;
+	}
+
+	public void setIdade(Integer idade) {
+		this.idade = idade;
+	}
+
+	@Override
+	public String toString() {
+		return codigo + ":" + nome + ":" + serie + ":" + idade + "\r\n";
+	}
+
 }

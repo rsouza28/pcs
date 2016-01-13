@@ -44,7 +44,14 @@ public class MenuPrincipal extends JFrame {
 	public MenuPrincipal() {
 
 		// --------------------- TITULO JANELA -----------------------------
+
+		/*
+		 * valores das janela (JFrame)
+		 */
+
+		// titulo
 		super("Jogo Da Forca");
+
 		setLocation(300, 200);
 		setSize(830, 460);
 		setResizable(false);
@@ -58,6 +65,10 @@ public class MenuPrincipal extends JFrame {
 
 	// ------------------------- HEAD -----------------------------
 	private void criarHead() {
+
+		/*
+		 * conteúdo da janela
+		 */
 
 		JPanel alunoView = new AlunoView();
 
@@ -78,6 +89,10 @@ public class MenuPrincipal extends JFrame {
 
 	// ------------------------- MENU -----------------------------
 	private void criarMenu() {
+
+		/*
+		 * criando menu e submenu
+		 */
 
 		JMenu menuJogo = new JMenu("Menu Jogo");
 
@@ -121,10 +136,19 @@ public class MenuPrincipal extends JFrame {
 		setJMenuBar(menubar);
 	}
 
+	/*
+	 * classe interna que espera os eventos e os trata
+	 */
+
 	private ActionListener listener = new ActionListener() {
 		public void actionPerformed(ActionEvent evento) {
 
 			if (evento.getSource() == menuItemAdminLogin) {
+
+				/*
+				 * caso clique em login
+				 */
+
 				AdminVo adminVo = new AdminVo();
 				boolean verificaEntrada = false;
 				boolean verificaCampo = false;
@@ -133,6 +157,10 @@ public class MenuPrincipal extends JFrame {
 
 				login = JOptionPane.showInputDialog("Digite seu login");
 
+				/*
+				 * validacoes, verificando valores de entrada
+				 */
+
 				verificaCampo = validaEntrada.validarCampoLetraLogin(login);
 				verificaEntrada = new ValidaEntrada().validarEntradaNumerosInteiros(login);
 
@@ -140,9 +168,17 @@ public class MenuPrincipal extends JFrame {
 
 					adminVo.setLogin(Long.parseLong(login));
 
+					/*
+					 * verifica admin cadastrado
+					 */
+
 					String verifica = new AdminControle().isAdminCadastrado(adminVo);
 
 					if (verifica.equals("true")) {
+
+						/*
+						 * abre a janela do admin, se estiver tudo certo
+						 */
 						new AdminView();
 
 					} else if (verifica.equals("false")) {
@@ -151,6 +187,11 @@ public class MenuPrincipal extends JFrame {
 				}
 
 			} else if (evento.getSource() == menuItemAdminCadastro) {
+
+				/*
+				 * caso clique em cadastrar admin
+				 */
+
 				AdminVo adminVo = new AdminVo();
 				boolean verificaEntrada = false;
 				boolean verificaCampo = false;
@@ -160,6 +201,10 @@ public class MenuPrincipal extends JFrame {
 				login = JOptionPane.showInputDialog("Cadastre um login");
 				verificaCampo = validaEntrada.validarCampoLetraLogin(login);
 				verificaEntrada = validaEntrada.validarEntradaNumerosInteiros(login);
+
+				/*
+				 * valida as entradas
+				 */
 
 				if (verificaCampo != false && verificaEntrada != false) {
 
@@ -175,8 +220,17 @@ public class MenuPrincipal extends JFrame {
 			} else if (evento.getSource() == menuItemJogar) {
 				cardLayout.show(panelConteudo, "2");
 
+				/*
+				 * caso clicar em jogar, utilizo o recurso cardLayout para
+				 * instanciar a classe AlunoView que é um JPane para abrir nessa
+				 * mesma JFrame (Janela)
+				 */
+
 			} else if (evento.getSource() == menuItemRankingTotal) {
 				new ListaRankingTotal();
+				/*
+				 * chama janela ranking
+				 */
 
 			} else if (evento.getSource() == menuItemRankingTop10) {
 				new ListaRankingTop10();

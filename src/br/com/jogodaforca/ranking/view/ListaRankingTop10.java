@@ -22,19 +22,19 @@ public class ListaRankingTop10 extends JFrame {
 	private static final long serialVersionUID = 6978976060192441149L;
 
 	private JTable tabelRanking;
-	private JScrollPane barraRolagem;
 	private TabelModelRanking rankingTabelModel;
 	private JPanel panelTitulo;
 	private JLabel tituloLabel;
 	private List<RankingVo> rankingLista;
+	private JScrollPane barraRolagem;
 
 	public ListaRankingTop10() {
 
 		// --------------------- TITULO JANELA -----------------------------
 		super("Ranking Top 10");
 		setLayout(new BorderLayout());
-		setLocation(400, 200);
-		setSize(630, 260);
+		setLocation(250, 150);
+		setSize(800, 400);
 		setResizable(true);
 		setVisible(true);
 
@@ -56,7 +56,6 @@ public class ListaRankingTop10 extends JFrame {
 
 	// ------------------------ TABELA -----------------------------
 	private void criarTabela() {
-
 		barraRolagem = new JScrollPane(getTabelRanking());
 		add(barraRolagem, BorderLayout.CENTER);
 	}
@@ -65,6 +64,9 @@ public class ListaRankingTop10 extends JFrame {
 		if (tabelRanking == null) {
 			tabelRanking = new JTable();
 			tabelRanking.setModel(getRankingTabelModel());
+			tabelRanking.setEnabled(false);
+			tabelRanking.getTableHeader().setReorderingAllowed(false);
+			tabelRanking.getTableHeader().setResizingAllowed(false);
 		}
 
 		return tabelRanking;
@@ -79,6 +81,9 @@ public class ListaRankingTop10 extends JFrame {
 
 	private List<RankingVo> getRankingLista() {
 		rankingLista = new RankingControle().gerarRankingTop10();
+		if (rankingLista == null) {
+			System.exit(0);
+		}
 		return rankingLista;
 	}
 

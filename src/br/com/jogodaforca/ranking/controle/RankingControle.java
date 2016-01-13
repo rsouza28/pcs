@@ -36,6 +36,10 @@ public class RankingControle {
 		// ordena lista
 		Collections.sort(rankingLista);
 
+		for (int i = 0; i < rankingLista.size(); i++) {
+			rankingLista.get(i).getRodada().getAluno().setCodigo(i + 1L);
+		}
+
 		return rankingLista;
 	}
 
