@@ -36,7 +36,7 @@ public class ValidaEntrada {
 	// usado para nomeAluno, palavra e dica
 	public boolean isNome(String nomeField) {
 
-		Pattern p = Pattern.compile("[a-zA-Z]{4,40}");
+		Pattern p = Pattern.compile("[a-zA-Z ]{4,40}");
 
 		Matcher m = p.matcher(nomeField);
 
@@ -51,20 +51,20 @@ public class ValidaEntrada {
 	// valida se a letra corresponde a uma letra e não número
 	public boolean validarEntradaPalavra(String palavra, String dica) {
 
-		Pattern p = Pattern.compile("[a-zA-Z]{4,40}");
+		Pattern p = Pattern.compile("[a-zA-Z ]{3,40}");
 
 		Matcher mPalavra = p.matcher(palavra);
 		Matcher mDica = p.matcher(dica);
 
 		if (mPalavra.matches() == false) {
 			JOptionPane.showMessageDialog(null,
-					"Valor inválido! \nEntre somente com letras, não use acento. Min de 4, máx de 40 carcteres!");
+					"Valor inválido! \nEntre somente com letras, não use acento. Min de 3, máx de 40 carcteres!");
 			return false;
 		}
 
 		if (mDica.matches() == false) {
 			JOptionPane.showMessageDialog(null,
-					"Valor inválido! \nEntre somente com letras, não use acento. Min de 4, máx de 40 carcteres!");
+					"Valor inválido! \nEntre somente com letras, não use acento. Min de 3, máx de 40 carcteres!");
 			return false;
 		}
 
@@ -88,7 +88,7 @@ public class ValidaEntrada {
 
 	// valida se o valor inserido para letra é nulo ou vazio
 	public boolean validarCampoLetraLogin(String letraLogin) {
-		if (letraLogin == null || letraLogin.equals("")) {
+		if (letraLogin.equals("")) {
 			JOptionPane.showMessageDialog(null, "Campo vazio ou nulo, favor entre com uma informação válida!");
 			return false;
 		} else {

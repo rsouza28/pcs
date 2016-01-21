@@ -59,7 +59,7 @@ public class MenuPrincipal extends JFrame {
 		setLayout(new BorderLayout());
 		criarHead();
 		criarMenu();
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 	}
 

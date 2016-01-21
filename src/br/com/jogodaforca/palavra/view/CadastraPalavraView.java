@@ -95,7 +95,7 @@ public class CadastraPalavraView extends JPanel {
 
 				if (verificaCampo != false && verificaEntrada != false) {
 
-					palavraVo.setPalavra(palavra);
+					palavraVo.setPalavra(palavra.replace(" ", ""));
 					palavraVo.setDica(dica);
 
 					boolean verifica = new PalavraControle().verificarSeJaExistePalavra(palavraVo);

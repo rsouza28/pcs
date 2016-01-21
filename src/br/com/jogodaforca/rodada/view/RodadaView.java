@@ -1,12 +1,15 @@
 package br.com.jogodaforca.rodada.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
+import java.awt.GridLayout;
+
+import javax.swing.ImageIcon;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -15,6 +18,7 @@ import javax.swing.JPanel;
 import br.com.jogodaforca.admin.controle.AdminControle;
 import br.com.jogodaforca.palavra.controle.PalavraControle;
 import br.com.jogodaforca.ranking.controle.RankingControle;
+import br.com.jogodaforca.ranking.view.ListaRankingTotal;
 import br.com.jogodaforca.util.ValidaEntrada;
 import br.com.jogodaforca.vo.AdminVo;
 import br.com.jogodaforca.vo.AlunoVo;
@@ -30,59 +34,92 @@ public class RodadaView extends JFrame {
 	private static final long serialVersionUID = -4405642999868273952L;
 
 	AdminControle adminCtrl = new AdminControle();
+
 	AdminVo admin = new AdminVo();
 	RodadaVo rodada = new RodadaVo();
+	AlunoVo alunoVo = new AlunoVo();
+	PalavraVo palavraSorteada = new PalavraVo();
+
 	StringBuilder letraCerta = new StringBuilder(100);
 	StringBuilder letraErrada = new StringBuilder(100);
 	StringBuilder tracos = new StringBuilder(300);
+	StringBuilder todasAsletrasSB = new StringBuilder(100);
+
+	JLabel imagemBonecoLabel = new JLabel();
+	JLabel nomeAlunoTempoLabel = new JLabel();
+	JLabel palavraLabel = new JLabel();
+	JLabel errosLabel = new JLabel();
+	JLabel dicaLabel = new JLabel();
+
+	ImageIcon icon = new ImageIcon();
+
+	Thread t;
+
+	boolean verificaTempo = false;
 	int acertos = 0;
 	int erros = 0;
-	StringBuilder todasAsletrasSB = new StringBuilder(100);
-	StringBuilder conteudoPane;
-	JButton botaoComecar;
-	AlunoVo alunoVo = new AlunoVo();
-	JLabel titulo;
-	boolean verificaTempo = false;
-	Thread t;
 	int i = 0;
-	PalavraVo palavraSorteada;
 
 	public RodadaView(AlunoVo alunoVo) {
 
 		super("Jogo Da Forca");
-		setLocation(300, 200);
-		setSize(630, 260);
-		setResizable(false);
-		setVisible(true);
-		setLayout(new BorderLayout());
+
+		this.setExtendedState(MAXIMIZED_BOTH);
+		this.setSize(350, 250);
+		this.setVisible(true);
+		this.setLayout(new BorderLayout());
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
 		this.alunoVo = alunoVo;
-		criarHead();
-		criarBotoes();
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+		this.criarConteudo1();
+		this.criarConteudo2();
+		this.jogar();
 
 	}
 
-	private void criarHead() {
+	private void criarConteudo1() {
 
-		JPanel panelTitulo = new JPanel();
-		panelTitulo.setLayout(new FlowLayout());
-		titulo = new JLabel("Clique em sortear palavra para começar");
-		titulo.setFont(new Font("Verdana", Font.PLAIN, 30));
-		panelTitulo.add(titulo);
+		JPanel conteudoJPanel1 = new JPanel();
+		conteudoJPanel1.setLayout(new FlowLayout());
+		this.add(conteudoJPanel1, BorderLayout.WEST);
 
-		add(panelTitulo, BorderLayout.NORTH);
+		// imagemBonecoLabel = new JLabel(new
+		// ImageIcon("src/br/com/jogodaforca/imagens/forca.png"));
+
+		// imagemBonecoLabel.setIcon(icon);
+		conteudoJPanel1.add(imagemBonecoLabel);
 
 	}
 
-	private void criarBotoes() {
-		JPanel panelBotoes = new JPanel();
-		panelBotoes.setLayout(new FlowLayout());
+	private void criarConteudo2() {
 
-		botaoComecar = new JButton("Sortear");
-		botaoComecar.addActionListener(listener);
-		panelBotoes.add(botaoComecar);
+		// panel direito principal
+		JPanel conteudoJPanel2 = new JPanel();
+		conteudoJPanel2.setLayout(new GridLayout(4, 1));
+		this.add(conteudoJPanel2);
 
-		add(panelBotoes, BorderLayout.CENTER);
+		// label do nome
+		nomeAlunoTempoLabel.setFont(new Font("Verdana", Font.PLAIN, 30));
+		// nomeAlunoTempoLabel.setText("NomeTempo");
+		conteudoJPanel2.add(nomeAlunoTempoLabel);
+
+		// label da palavra
+		palavraLabel.setFont(new Font("Verdana", Font.BOLD, 40));
+		// palavraLabel.setText("Palavra");
+		conteudoJPanel2.add(palavraLabel);
+
+		// label dos erros
+		errosLabel.setFont(new Font("Verdana", Font.PLAIN, 25));
+		// errosLabel.setText("Erros");
+		errosLabel.setForeground(Color.RED);
+		conteudoJPanel2.add(errosLabel);
+
+		// label da dica
+		dicaLabel.setFont(new Font("Verdana", Font.ROMAN_BASELINE, 25));
+		// dicaLabel.setText("Dica");
+		errosLabel.setForeground(Color.RED);
+		conteudoJPanel2.add(dicaLabel);
 
 	}
 
@@ -156,54 +193,46 @@ public class RodadaView extends JFrame {
 
 	}
 
-	private StringBuilder boneco(Integer numeroErros) {
-
-		StringBuilder bonecoBuilder = new StringBuilder();
+	private void boneco(Integer numeroErros) {
 
 		switch (numeroErros) {
+
+		case 0:
+			icon = new ImageIcon("src/br/com/jogodaforca/main/forca.png");
+			imagemBonecoLabel.setIcon(icon);
+			break;
 		case 1:
-			bonecoBuilder.append(" ('-')");
+			icon = new ImageIcon("src/br/com/jogodaforca/main/cabeca.png");
+			imagemBonecoLabel.setIcon(icon);
 			break;
 		case 2:
-			bonecoBuilder.append(" ('-')");
-			bonecoBuilder.append("\n");
-			bonecoBuilder.append("/");
+			icon = new ImageIcon("src/br/com/jogodaforca/main/corpo.png");
+			imagemBonecoLabel.setIcon(icon);
 			break;
 		case 3:
-			bonecoBuilder.append(" ('-')");
-			bonecoBuilder.append("\n");
-			bonecoBuilder.append(" /   \\");
+			icon = new ImageIcon("src/br/com/jogodaforca/main/bracoE.png");
+			imagemBonecoLabel.setIcon(icon);
 			break;
 		case 4:
-			bonecoBuilder.append(" ('-')");
-			bonecoBuilder.append("\n");
-			bonecoBuilder.append(" / | \\");
+			icon = new ImageIcon("src/br/com/jogodaforca/main/bracoD.png");
+			imagemBonecoLabel.setIcon(icon);
 			break;
 		case 5:
-			bonecoBuilder.append(" ('-')");
-			bonecoBuilder.append("\n");
-			bonecoBuilder.append(" / | \\");
-			bonecoBuilder.append("\n");
-			bonecoBuilder.append("  /");
+			icon = new ImageIcon("src/br/com/jogodaforca/main/pernaE.png");
+			imagemBonecoLabel.setIcon(icon);
 			break;
 		case 6:
-			bonecoBuilder.append("Parabéns você montou o boneco. rs");
-			bonecoBuilder.append("\n");
-			bonecoBuilder.append(" ('-')");
-			bonecoBuilder.append("\n");
-			bonecoBuilder.append(" / | \\");
-			bonecoBuilder.append("\n");
-			bonecoBuilder.append("  / \\");
-			bonecoBuilder.append("\n");
+			icon = new ImageIcon("src/br/com/jogodaforca/main/completo.png");
+			imagemBonecoLabel.setIcon(icon);
 			break;
 		default:
+			JOptionPane.showMessageDialog(null, "Erro!");
 			break;
 
 		}
-		return bonecoBuilder;
 	}
 
-	public void calcularPontosEsalvar() {
+	private void calcularPontosEsalvar() {
 		RodadaVo rodadaVo = new RodadaVo();
 		rodadaVo.setAcertos(acertos);
 		rodadaVo.setErros(erros);
@@ -217,125 +246,109 @@ public class RodadaView extends JFrame {
 
 	}
 
-	private ActionListener listener = new ActionListener() {
-		@SuppressWarnings("static-access")
-		public void actionPerformed(ActionEvent evento) {
+	@SuppressWarnings("static-access")
+	private void jogar() {
 
-			if (evento.getSource() == botaoComecar) {
+		palavraSorteada = new PalavraControle().sortearPalavra();
 
-				palavraSorteada = new PalavraControle().sortearPalavra();
+		if (palavraSorteada != null) {
 
-				if (palavraSorteada != null) {
-
-					botaoComecar.setVisible(false);
-
-					Runnable r = () -> {
-						try {
-							for (i = 300; i >= 0; i--) {
-								titulo.setText("Tempo: " + i + "s");
-								Thread.sleep(1000); // 1 segundo
-							}
-							verificaTempo = true;
-							calcularPontosEsalvar();
-							JOptionPane.showMessageDialog(null, "Que pena, o tempo acabou!");
-							System.exit(0);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					};
-					t = new Thread(r);
-					t.start();
-
-					rodada.setPalavra(palavraSorteada);
-
-					qtdTracos(palavraSorteada);
-					String tracosString = tracos.toString();
-
-					conteudoPane = new StringBuilder();
-					StringBuilder conteudoPaneCopia = new StringBuilder();
-					char letra = ' ';
-					String letraStr = " ";
-
-					JOptionPane optionPane = new JOptionPane();
-					optionPane.setSize(1000, 900);
-
-					ValidaEntrada validaEntrada = new ValidaEntrada();
-
-					while (tracosString.contains("_") && erros <= 5) {
-						tracosString = tracos.toString();
-						boolean verificaLetraRepetida = true;
-						boolean validaCampoLetra = false;
-						boolean validaEntradaLetra = false;
-
-						while (verificaLetraRepetida == true && validaCampoLetra == false && validaEntradaLetra == false
-								&& verificaTempo == false) {
-							conteudoPane.append("Jogador: " + alunoVo.getNome());
-							conteudoPane.append("\n");
-							conteudoPane.append(aplicarEspaco(tracosString));
-							conteudoPane.append("\n");
-							conteudoPane.append("Dica: " + palavraSorteada.getDica());
-							conteudoPane.append("\n");
-							conteudoPane.append("Letras erradas: ");
-							conteudoPane.append(letraErrada.toString().replaceAll("(.)", "$1, "));
-							conteudoPane.append("\n");
-							conteudoPane.append("Digite uma letra");
-							conteudoPane.append("\n");
-							conteudoPane.append(boneco(erros));
-
-							letraStr = optionPane.showInputDialog(conteudoPane.toString());
-
-							validaCampoLetra = validaEntrada.validarCampoLetraLogin(letraStr);
-							if (validaCampoLetra == true) {
-								validaEntradaLetra = validaEntrada.validarEntradaLetra(letraStr);
-							}
-							if (validaCampoLetra == true && validaEntradaLetra == true) {
-
-								letra = letraStr.trim().toUpperCase().charAt(0);
-
-								verificaLetraRepetida = verificaLetraRepetida(letra);
-								if (verificaLetraRepetida == true) {
-									JOptionPane.showMessageDialog(null, "Letra repetida!");
-								} else {
-									verificarLetra(letra);
-								}
-							}
-							tracosString = tracos.toString();
-							conteudoPane = new StringBuilder();
-						}
+			Runnable r = () -> {
+				try {
+					for (i = 300; i >= 0; i--) {
+						nomeAlunoTempoLabel.setText(alunoVo.getNome() + " --- Tempo: " + i + "s");
+						Thread.sleep(1000); // 1 segundo
 					}
-
-					conteudoPaneCopia.append("Jogador: " + alunoVo.getNome());
-					conteudoPaneCopia.append("\n");
-					conteudoPaneCopia.append(aplicarEspaco(tracosString));
-					conteudoPaneCopia.append("\n");
-					conteudoPaneCopia.append("Dica: " + palavraSorteada.getDica());
-					conteudoPaneCopia.append("\n");
-					conteudoPaneCopia.append("Letras erradas: ");
-					conteudoPaneCopia.append(letraErrada.toString().replaceAll("(.)", "$1, "));
-					conteudoPaneCopia.append("\n");
-					conteudoPaneCopia.append(boneco(erros));
-
-					if (!tracosString.contains("_")) {
-						t.interrupt();
-						calcularPontosEsalvar();
-						conteudoPaneCopia.append("\n");
-						conteudoPaneCopia.append("Parabéns! Você acertou a palavra!");
-						JOptionPane.showMessageDialog(null, conteudoPaneCopia.toString());
-					} else {
-						t.interrupt();
-						calcularPontosEsalvar();
-						conteudoPaneCopia.append("Que pena! Você não acertou a palavra!");
-						JOptionPane.showMessageDialog(null, conteudoPaneCopia.toString());
-					}
-					conteudoPaneCopia = new StringBuilder();
-					conteudoPane = new StringBuilder();
-				} else {
-					JOptionPane.showMessageDialog(null, "Não existe palavra cadastrada!");
+					verificaTempo = true;
+					calcularPontosEsalvar();
+					JOptionPane.showMessageDialog(null, "Que pena, o tempo acabou!");
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
+			};
+			t = new Thread(r);
+			t.start();
 
+			rodada.setPalavra(palavraSorteada);
+
+			qtdTracos(palavraSorteada);
+			String tracosString = tracos.toString();
+
+			char letra = ' ';
+			String letraStr = " ";
+
+			JOptionPane optionPane = new JOptionPane();
+			optionPane.setSize(1000, 900);
+
+			ValidaEntrada validaEntrada = new ValidaEntrada();
+
+			while (tracosString.contains("_") && erros <= 5 && letraStr != null) {
+				tracosString = tracos.toString();
+				boolean verificaLetraRepetida = true;
+				boolean validaCampoLetra = false;
+				boolean validaEntradaLetra = false;
+
+				while (verificaLetraRepetida == true && validaCampoLetra == false && validaEntradaLetra == false
+						&& verificaTempo == false && letraStr != null) {
+
+					palavraLabel.setText("Palavra: " + aplicarEspaco(tracosString));
+					errosLabel.setText("Erros: " + letraErrada.toString().replaceAll("(.)", "$1, "));
+					dicaLabel.setText("*Dica: " + palavraSorteada.getDica());
+
+					boneco(erros);
+
+					// ("Dica: "+ palavraSorteada.getDica());
+					// ("Letras erradas: ");
+					// (letraErrada.toString().replaceAll("(.)",
+					// "$1, "));
+					// conteudoPane.append(boneco(erros));
+
+					letraStr = optionPane.showInputDialog("Digite uma letra");
+
+					if (letraStr != null) {
+
+						validaCampoLetra = validaEntrada.validarCampoLetraLogin(letraStr);
+						if (validaCampoLetra == true) {
+							validaEntradaLetra = validaEntrada.validarEntradaLetra(letraStr);
+						}
+						if (validaCampoLetra == true && validaEntradaLetra == true) {
+
+							letra = letraStr.trim().toUpperCase().charAt(0);
+
+							verificaLetraRepetida = verificaLetraRepetida(letra);
+							if (verificaLetraRepetida == true) {
+								JOptionPane.showMessageDialog(null, "Letra repetida!");
+							} else {
+								verificarLetra(letra);
+							}
+						}
+						tracosString = tracos.toString();
+					}
+
+				}
 			}
+			palavraLabel.setText("Palavra: " + aplicarEspaco(tracosString));
+			errosLabel.setText("Erros: " + letraErrada.toString().replaceAll("(.)", "$1, "));
+			dicaLabel.setText("*Dica: " + palavraSorteada.getDica());
+			boneco(erros);
+
+			t.interrupt();
+
+			if (!tracosString.contains("_")) {
+				calcularPontosEsalvar();
+				JOptionPane.showMessageDialog(null, "Parabéns! Você acertou a palavra!");
+			} else {
+				calcularPontosEsalvar();
+				JOptionPane.showMessageDialog(null, "Que pena! Você não acertou a palavra!");
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Não existe palavra cadastrada!");
 		}
-	};
+
+		setVisible(false);
+		new ListaRankingTotal();
+
+	}
 
 	// Teste
 	// public static void main(String[] args) {

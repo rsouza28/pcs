@@ -19,8 +19,6 @@ public class TabelModelRanking extends AbstractTableModel {
 	private static final int PONTUACAO = 3;
 	private static final int TEMPO = 4;
 
-	private static Integer POSICAOI = 0;
-
 	private String[] tabelaColunas = new String[] { "Posição", "Nome", "Idade", "Pontuação", "Tempo" };
 
 	private List<RankingVo> rankingLinhas;

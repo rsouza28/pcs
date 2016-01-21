@@ -42,6 +42,7 @@ public class ListaRankingTotal extends JFrame {
 		criarHead();
 		criarTabela();
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
 	}
 
 	// ------------------------ HEAD -----------------------------

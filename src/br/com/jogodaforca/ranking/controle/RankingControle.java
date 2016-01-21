@@ -22,7 +22,7 @@ public class RankingControle {
 		int tempoDecrescente = rankingVo.getRodada().getTempo();
 		int tempoCrescente = 300 - tempoDecrescente;
 
-		rankingVo.getRodada().setPontuacao(10 * acertos - 5 * erros + tempoCrescente);
+		rankingVo.getRodada().setPontuacao(10 * acertos - 5 * erros + 300 - tempoCrescente);
 
 		rankingVo.getRodada().setTempo(tempoCrescente);
 
